@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Files</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        form {
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        select,
+        input[type="file"],
+        input[type="submit"] {
+            margin-bottom: 20px;
+        }
+
+        .message {
+            color: #ff5555;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        .result-container {
+            margin-top: 30px;
+        }
+
+        .result-item {
+            margin-bottom: 30px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .result-item h2 {
+            background-color: #3498db;
+            color: #fff;
+            padding: 10px;
+            margin: 0;
+        }
+
+        .result-item img {
+            width: 100%;
+            display: block;
+            border-radius: 8px 8px 0 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Upload Files</h1>
+        <form method="POST" action="/predict" enctype="multipart/form-data">
+            <label for="file_type">Select file type:</label>
+            <select name="file_type" id="file_type">
+                <option value="image">Image</option>
+                <option value="video">Video</option>
+            </select>
+            <br><br>
+            <input type="file" name="file">
+            <br><br>
+            <input type="submit" value="Upload">
+        </form>
+        {% if message %}
+        <p class="message">{{ message }}</p>
+        {% endif %}
+        {% if class_name %}
+        <div class="result-container">
+            <div class="result-item">
+                <h2>Prediction Result</h2>
+                <div class="result-content">
+                    <p><strong>Class:</strong> {{ class_name }}</p>
+                    <p><strong>Confidence Score:</strong> {{ confidence_score }}</p>
+                </div>
+            </div>
+            {% if scatter_plot_img %}
+            <div class="result-item">
+                <h2>Scatter Plot</h2>
+                <img src="data:image/png;base64,{{ scatter_plot_img }}" alt="Scatter Plot">
+            </div>
+            {% endif %}
+            {% if bar_chart_img %}
+            <div class="result-item">
+                <h2>Bar Chart</h2>
+                <img src="data:image/png;base64,{{ bar_chart_img }}" alt="Bar Chart">
+            </div>
+            {% endif %}
+            {% if pie_chart_img %}
+            <div class="result-item">
+                <h2>Pie Chart</h2>
+                <img src="data:image/png;base64,{{ pie_chart_img }}" alt="Pie Chart">
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</body>
+
+</html>
